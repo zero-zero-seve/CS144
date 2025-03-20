@@ -16,10 +16,7 @@ class Ref
 
 public:
   // default constructor -> owned reference (default-constructed)
-  Ref()
-    requires std::default_initializable<T>
-    : obj_( std::in_place )
-  {}
+  Ref() requires std::default_initializable<T> : obj_( std::in_place ) {}
 
   // construct from rvalue reference -> owned reference (moved from original)
   Ref( T&& obj ) : obj_( std::move( obj ) ) {} // NOLINT(*-explicit-*)
@@ -66,13 +63,22 @@ public:
 
   ~Ref() = default;
 
-  bool is_owned() const { return obj_.has_value(); }
-  bool is_borrowed() const { return not is_owned(); }
+  bool is_owned() const
+  {
+    return obj_.has_value();
+  }
+  bool is_borrowed() const
+  {
+    return not is_owned();
+  }
 
   // accessors
 
   // const reference to object (owned or borrowed)
-  const T& get() const { return obj_.has_value() ? *obj_ : *borrowed_obj_; }
+  const T& get() const
+  {
+    return obj_.has_value() ? *obj_ : *borrowed_obj_;
+  }
 
   // mutable reference to object (owned only)
   T& get_mut()
@@ -83,13 +89,24 @@ public:
     return *obj_;
   }
 
-  operator const T&() const { return get(); } // NOLINT(*-explicit-*)
-  operator T&() { return get_mut(); }         // NOLINT(*-explicit-*)
-  const T* operator->() const { return &get(); }
-  T* operator->() { return &get_mut(); }
+  operator const T&() const
+  {
+    return get();
+  } // NOLINT(*-explicit-*)
+  operator T&()
+  {
+    return get_mut();
+  } // NOLINT(*-explicit-*)
+  const T* operator->() const
+  {
+    return &get();
+  }
+  T* operator->()
+  {
+    return &get_mut();
+  }
 
-  explicit operator std::string_view() const
-    requires std::is_convertible_v<T, std::string_view>
+  explicit operator std::string_view() const requires std::is_convertible_v<T, std::string_view>
   {
     return get();
   }

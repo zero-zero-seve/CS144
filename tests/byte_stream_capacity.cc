@@ -1,7 +1,7 @@
-#include "byte_stream_test_harness.hh"
-
 #include <exception>
 #include <iostream>
+
+#include "byte_stream_test_harness.hh"
 
 using namespace std;
 
@@ -55,6 +55,7 @@ int main()
       ByteStreamTestHarness test { "overwrite-pop-overwrite", 2 };
 
       test.execute( Push { "cat" } );
+      // test.execute(Peek{"ca"});
       test.execute( BytesPushed { 2 } );
       test.execute( Pop { 1 } );
       test.execute( Push { "tac" } );
