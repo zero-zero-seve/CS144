@@ -54,6 +54,7 @@ public:
       obj_ = other.get();
       borrowed_obj_ = nullptr;
     }
+    return *this;
   }
 #else
   // forbid implicit copies
